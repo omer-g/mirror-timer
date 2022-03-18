@@ -1,17 +1,14 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
-    import { addNoSleepListener, removeNoSleepListener } from "../stayAwake"; 
+    // import { addNoSleepListener, removeNoSleepListener } from "../stayAwake"; 
     
     const timerFormId = "timerForm";
 
-    function fluff() {
-        return 1;
-    }
-    // // KEEP DEVICE AWAKE WHILE TIMER IS IN FOCUS
-    onMount(() => {
-        addNoSleepListener(document.getElementById(timerFormId));
-    });
-    onDestroy(removeNoSleepListener);
+    // // // KEEP DEVICE AWAKE WHILE TIMER IS IN FOCUS
+    // onMount(async () => {
+    //     addNoSleepListener(document.getElementById(timerFormId));
+    // });
+    // onDestroy(removeNoSleepListener);
 
     let timerRunning = false;
 
@@ -23,7 +20,7 @@
     const returnMinutes = (time: number) => Math.floor(time / 60);
     const returnSeconds = (time: number) => Math.floor(time % 60);
     
-    let intervalId = 0;
+    let intervalId: NodeJS.Timer;
 
     let initialMinutes = 1;
     let initialTime = inSeconds(initialMinutes);
@@ -47,7 +44,7 @@
         if (Number.isInteger(minutes) && minutes > 0) {
             time = inSeconds(minutes);
         }
-        intervalId = window.setInterval(() => (time = updateTime(time)), 1000);
+        intervalId = setInterval(() => (time = updateTime(time)), 1000);
         timerRunning = true;
     }
 </script>
